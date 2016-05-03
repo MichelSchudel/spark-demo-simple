@@ -25,12 +25,14 @@ class ServicesWatcher implements Watcher {
 
     @Override
     public void process(WatchedEvent watchedEvent) {
-        try {
-            this.services = zookeeperClient.getAllRegisteredServices().stream().map(Service::new).collect(Collectors.toList());
-        } catch (Exception e) {
-            e.printStackTrace();
+        if(zookeeperClient.isStarted()) {
+            try {
+                this.services = zookeeperClient.getAllRegisteredServices().stream().map(Service::new).collect(Collectors.toList());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            zookeeperClient.watch(this);
         }
-        zookeeperClient.watch(this);
     }
 
     public List<Service> getServices() {

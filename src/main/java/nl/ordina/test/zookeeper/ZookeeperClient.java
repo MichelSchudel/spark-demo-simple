@@ -2,6 +2,7 @@ package nl.ordina.test.zookeeper;
 
 import org.apache.curator.framework.CuratorFramework;
 import org.apache.curator.framework.CuratorFrameworkFactory;
+import org.apache.curator.framework.imps.CuratorFrameworkState;
 import org.apache.curator.retry.RetryNTimes;
 import org.apache.curator.utils.ZKPaths;
 import org.apache.zookeeper.CreateMode;
@@ -58,4 +59,11 @@ public class ZookeeperClient {
         }
     }
 
+    public void close() {
+        curatorFramework.close();
+    }
+
+    public boolean isStarted() {
+        return curatorFramework.getState() == CuratorFrameworkState.STARTED;
+    }
 }

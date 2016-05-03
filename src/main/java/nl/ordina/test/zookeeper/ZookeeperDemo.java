@@ -38,6 +38,10 @@ public class ZookeeperDemo {
             port(port);
             get("/registered", (request, response) -> services.getServices(), gson::toJson);
 
+            //close the client on exit
+            Runtime.getRuntime().addShutdownHook(new Thread(() -> { zookeeperClient.close(); }));
+
+
         } catch (Exception e) {
             e.printStackTrace();
         }
